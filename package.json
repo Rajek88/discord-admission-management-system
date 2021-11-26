@@ -11,8 +11,10 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^13.3.1",
+    "discord.js-collector": "^1.8.9",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "google-spreadsheet": "^3.2.0",
     "googleapis": "^91.0.0",
     "node-fetch": "^2.6.6",
     "spreadsheet-to-json": "^2.0.0"
