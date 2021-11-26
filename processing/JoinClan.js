@@ -140,6 +140,43 @@ const JoinClan = async (message, clanNum) => {
                   },
                 },
               },
+              {
+                appendCells: {
+                  rows: [
+                    {
+                      values: [
+                        {
+                          userEnteredValue: {
+                            stringValue: "Email",
+                          },
+                        },
+                        {
+                          userEnteredValue: {
+                            stringValue: "Candidate Id",
+                          },
+                        },
+                        {
+                          userEnteredValue: {
+                            stringValue: "Command",
+                          },
+                        },
+                        {
+                          userEnteredValue: {
+                            stringValue: "Role Id",
+                          },
+                        },
+                        {
+                          userEnteredValue: {
+                            stringValue: "Time",
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                  fields: "userEnteredValue",
+                  sheetId: clanNum,
+                },
+              },
             ],
           },
         };
@@ -155,7 +192,8 @@ const JoinClan = async (message, clanNum) => {
           {
             spreadsheetId: sheetId,
             range: `Clan-${clanNum}`,
-            resource,
+            valueInputOption: "RAW",
+            resource: resource,
           },
           (err, result) => {
             if (err) {
