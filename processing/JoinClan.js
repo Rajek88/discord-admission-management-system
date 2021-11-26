@@ -1,15 +1,16 @@
 // setup google sheet api
 const { google } = require("googleapis");
+const DMHandlerForEmailVerification = require("../DM");
 const sheetId = "1U_4ritKqM3hDty8lhHisiT5JMJgzjvBC8oTgsfxkNgo";
 
 const Sheet2Json = require("./Sheet2Json");
 
 const JoinClan = async (message, clanNum) => {
   // manipulate sheet
-  if (clanNum < 12 || clanNum > 13) {
-    message.reply("No clan exists");
-    return;
-  }
+  //   if (clanNum < 12 || clanNum > 13) {
+  //     message.reply("No clan exists");
+  //     return;
+  //   }
 
   // initialize gauth
   const auth = new google.auth.GoogleAuth({
@@ -39,9 +40,9 @@ const JoinClan = async (message, clanNum) => {
   });
 
   const response = getRows.data;
-  console.log("row data : ", getRows.data);
+  //   console.log("row data : ", getRows.data);
   const newJson = Sheet2Json(response.values);
-  console.log("New JSON : ", newJson);
+  //   console.log("New JSON : ", newJson);
   // collect user data
   let userData = [];
   //assign authorID to memberID
@@ -99,14 +100,6 @@ const JoinClan = async (message, clanNum) => {
         // if there is no clan sheet, create it
         console.log("Creating sheet : ", `Clan-${clanNum}`);
 
-        // let values = [
-        //   ["Email", "Candidate ID", "Command", "Role ID", "Time"],
-        //   // Potential next row
-        // ];
-
-        // const resource = {
-        //   values,
-        // };
         const request = {
           // The ID of the spreadsheet
           spreadsheetId: sheetId,
@@ -168,6 +161,9 @@ const JoinClan = async (message, clanNum) => {
           }
           console.log("creating Google sheet : ", response);
         });
+      })
+      .then(() => {
+        DMHandlerForEmailVerification(message);
       });
 
     message.reply("Please check your DM to verify your mail");

@@ -6,9 +6,10 @@ const fetch = require("node-fetch");
 require("dotenv").config();
 const { Client, Intents } = require("discord.js");
 
-const DMHandler = require("./DM");
+// const DMHandler = require("./DM");
 const DMHandlerForEmailVerification = require("./DM");
 const JoinClan = require("./processing/JoinClan");
+// const validateEmail = require("./processing/EmailValidator");
 
 // 1 = in normal DM, 2 = in Verfication DM
 let isInDM = 1;
@@ -38,39 +39,34 @@ client.on("messageCreate", (message) => {
   }
 
   console.log("msg type : ", message.channel.type);
-  if (message.channel.type === "DM") {
-    if (isInDM === 1) {
-      DMHandler(message);
-    } else if (isInDM === 2) {
-      isInDM = DMHandlerForEmailVerification(message);
-    }
+  console.log("msg : ", message);
+
+  if (message.channel.type === "DM" && !message.content.startsWith(PREFIX)) {
+    DMHandlerForEmailVerification(message);
     return;
-  } else {
-    if (message.content.startsWith(PREFIX)) {
-      // if (message.content.substring(1) === "ping") {
-      //   console.log("pinged");
-      //   message.reply("Pong ...!");
-      // }
+  }
+  if (message.content.startsWith(PREFIX) && message.channel.type !== "DM") {
+    // if (message.content.substring(1) === "ping") {
+    //   console.log("pinged");
+    //   message.reply("Pong ...!");
+    // }
 
-      //   handle input
-      const [cmd, clan, clanNum] = message.content
-        .trim()
-        .substring(PREFIX.length)
-        .split("-");
+    //   handle input
+    const [cmd, clan, clanNum] = message.content
+      .trim()
+      .substring(PREFIX.length)
+      .split("-");
 
-      console.log(
-        "cmd : " + cmd + " clan : " + clan + " clan-Num : " + clanNum
-      );
+    console.log("cmd : " + cmd + " clan : " + clan + " clan-Num : " + clanNum);
 
-      if (cmd === "join" && clan == "clan") {
-        // message.reply("Ok wait");
-        JoinClan(message, clanNum);
-      } else {
-        message.reply("Thats an invalid command, recheck it !");
-      }
+    if (cmd === "join" && clan == "clan") {
+      // message.reply("Ok wait");
+      JoinClan(message, clanNum);
     } else {
       message.reply("Thats an invalid command, recheck it !");
     }
+  } else {
+    message.reply("Thats an invalid command, recheck it !");
   }
 
   //   if its human then its ok
