@@ -9,6 +9,7 @@ const { Client, Intents } = require("discord.js");
 // const DMHandler = require("./DM");
 const DMHandlerForEmailVerification = require("./DM");
 const JoinClan = require("./processing/JoinClan");
+let clanNum1;
 // const validateEmail = require("./processing/EmailValidator");
 
 // 1 = in normal DM, 2 = in Verfication DM
@@ -42,7 +43,7 @@ client.on("messageCreate", (message) => {
   console.log("msg : ", message);
 
   if (message.channel.type === "DM" && !message.content.startsWith(PREFIX)) {
-    DMHandlerForEmailVerification(message);
+    DMHandlerForEmailVerification(message, clanNum1);
     return;
   }
   if (message.content.startsWith(PREFIX) && message.channel.type !== "DM") {
@@ -58,6 +59,8 @@ client.on("messageCreate", (message) => {
       .split("-");
 
     console.log("cmd : " + cmd + " clan : " + clan + " clan-Num : " + clanNum);
+    // first store the clanNum in global variable clanNum1
+    clanNum1 = clanNum;
 
     if (cmd === "join" && clan == "clan") {
       // message.reply("Ok wait");

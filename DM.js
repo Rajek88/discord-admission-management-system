@@ -1,14 +1,26 @@
+const { google } = require("googleapis");
+const sheetId = "1U_4ritKqM3hDty8lhHisiT5JMJgzjvBC8oTgsfxkNgo";
 // DM Handler
 const { MessageCollector } = require("discord.js-collector");
 const isUserExists = require("./processing/EmailValidator");
 const validateEmail = require("./processing/EmailValidator");
 
-const DMHandlerForEmailVerification = async (message) => {
+const DMHandlerForEmailVerification = async (message, clanNum) => {
   if (message.author.bot) {
     return;
   }
   console.log("message received DM : ", message.content);
   console.log("message channel is DM ? : ", message.channel.type);
+  // initialize gauth
+  const auth = new google.auth.GoogleAuth({
+    keyFile: "./creds.json",
+    scopes: "https://www.googleapis.com/auth/spreadsheets",
+  });
+  //   create client instance for auth
+  const gclient = await auth.getClient();
+
+  // access google sheets
+  const gsheets = google.sheets({ version: "v4", auth: gclient });
 
   if (validateEmail(message.content)) {
     console.log("message.mentions.users.first() : ", message.mentions);
@@ -20,10 +32,39 @@ const DMHandlerForEmailVerification = async (message) => {
     } else {
       // **************************************************************************************************** Append the data here now ***********************************
       message.channel.send("Verified Successfully !");
+
+      let values = [
+        [
+          message.content,
+          message.author.id,
+          `!join-clan-${clanNum}`,
+          "",
+          Date.now(),
+        ],
+        // Additional rows ...
+      ];
+      let resource = {
+        values,
+      };
+      //   append the data to google sheet
+      gsheets.spreadsheets.values
+        .append({
+          spreadsheetId: sheetId,
+          range: `Clan-${clanNum}`, // Or where you need the data to go
+          valueInputOption: "RAW",
+          resource: resource, // takes the array created in the lines earlier
+        })
+        .catch((error) =>
+          console.log(
+            `Error in appending data to sheet : Clan-${clanNum} : `,
+            error
+          )
+        );
+
       return "verified";
     }
 
-    return;
+    return "not-verified";
   }
 
   //   let filter = (m) => m.author.id === message.author.id;
