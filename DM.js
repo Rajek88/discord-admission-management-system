@@ -36,10 +36,11 @@ const DMHandlerForEmailVerification = async (message, clanNum) => {
       let values = [
         [
           message.content,
+          message.author.username,
           message.author.id,
           `!join-clan-${clanNum}`,
-          "",
-          Date.now(),
+          message.channelId,
+          message.createdTimestamp,
         ],
         // Additional rows ...
       ];

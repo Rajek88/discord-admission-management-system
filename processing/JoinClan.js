@@ -126,6 +126,11 @@ const JoinClan = async (message, clanNum) => {
                         },
                         {
                           userEnteredValue: {
+                            stringValue: "Name",
+                          },
+                        },
+                        {
+                          userEnteredValue: {
                             stringValue: "Candidate Id",
                           },
                         },
