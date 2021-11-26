@@ -99,23 +99,14 @@ const JoinClan = async (message, clanNum) => {
         // if there is no clan sheet, create it
         console.log("Creating sheet : ", `Clan-${clanNum}`);
 
-        let values = [
-          ["Email", "Candidate ID", "Command", "Role ID", "Time"],
-          // Potential next row
-        ];
-        // const createOption = {
-        //   resource: {
-        //     properties: {
-        //       title: `Clan-${clanNum}`,
-        //     },
-        //     // fields: sheetId,
-        //     // values,
-        //   },
-        // };
+        // let values = [
+        //   ["Email", "Candidate ID", "Command", "Role ID", "Time"],
+        //   // Potential next row
+        // ];
 
-        const resource = {
-          values,
-        };
+        // const resource = {
+        //   values,
+        // };
         const request = {
           // The ID of the spreadsheet
           spreadsheetId: sheetId,
@@ -127,16 +118,6 @@ const JoinClan = async (message, clanNum) => {
                   properties: {
                     sheetId: clanNum,
                     title: `Clan-${clanNum}`,
-                    // index: number,
-                    // sheetType: enum(SheetType),
-                    // "gridProperties": {
-                    //     object(GridProperties)
-                    // },
-                    // "hidden": boolean,
-                    // "tabColor": {
-                    //     object(Color)
-                    // },
-                    // "rightToLeft": boolean
                   },
                 },
               },
@@ -187,23 +168,6 @@ const JoinClan = async (message, clanNum) => {
           }
           console.log("creating Google sheet : ", response);
         });
-
-        gsheets.spreadsheets.values.append(
-          {
-            spreadsheetId: sheetId,
-            range: `Clan-${clanNum}`,
-            valueInputOption: "RAW",
-            resource: resource,
-          },
-          (err, result) => {
-            if (err) {
-              // Handle error.
-              console.log(err);
-            } else {
-              console.log(`${result.updates.updatedCells} cells appended.`);
-            }
-          }
-        );
       });
 
     message.reply("Please check your DM to verify your mail");
