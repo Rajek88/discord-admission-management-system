@@ -161,14 +161,41 @@ const JoinClan = async (message, clanNum) => {
           }
           console.log("creating Google sheet : ", response);
         });
-      })
-      .then(() => {
-        DMHandlerForEmailVerification(message);
       });
+    //   .then(() => {
+    //     const isVerified = DMHandlerForEmailVerification(message);
+    //     // if (isVerified == "verified") {
+    //     //   let values = [
+    //     //     [
+    //     //       message.content,
+    //     //       message.author.id,
+    //     //       `!join-clan-${clanNum}`,
+    //     //       "",
+    //     //       new Date.now(),
+    //     //     ],
+    //     //     // Additional rows ...
+    //     //   ];
+    //     //   let resource = {
+    //     //     values,
+    //     //   };
+    //     //   gsheets.spreadsheets.values
+    //     //     .append({
+    //     //       spreadsheetId: clanNum,
+    //     //       range: `Clan-${clanNum}`, // Or where you need the data to go
+    //     //       valueInputOption: "RAW",
+    //     //       resource: resource, // takes the array created in the lines earlier
+    //     //     })
+    //     //     .catch((error) =>
+    //     //       console.log(
+    //     //         `Error in appending data to sheet : Clan-${clanNum} : `,
+    //     //         error
+    //     //       )
+    //     //     );
+    //     // }
+    //   });
 
     message.reply("Please check your DM to verify your mail");
-    // message.author.send("Enter your mail");
-    isInDM = 2;
+    message.author.send(`Hey ${message.author}, Enter your email to verify`);
 
     // console.log(message.content);
   } else {

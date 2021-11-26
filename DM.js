@@ -1,5 +1,4 @@
 // DM Handler
-
 const { MessageCollector } = require("discord.js-collector");
 const isUserExists = require("./processing/EmailValidator");
 const validateEmail = require("./processing/EmailValidator");
@@ -14,12 +13,14 @@ const DMHandlerForEmailVerification = async (message) => {
   if (validateEmail(message.content)) {
     console.log("message.mentions.users.first() : ", message.mentions);
     // now check in every sheet and every sheet's email field that the given mail exists
-    const isEmailExists = await isUserExists(message.content); //this acquires claan name if user dont exists
+    const isEmailExists = await isUserExists(message.content); //this acquires clan name if user dont exists
     console.log("isMail exists ? -> ", isEmailExists);
     if (isEmailExists !== "false") {
       message.channel.send(`User is already admitted to ${isEmailExists}`);
     } else {
+      // **************************************************************************************************** Append the data here now ***********************************
       message.channel.send("Verified Successfully !");
+      return "verified";
     }
 
     return;
