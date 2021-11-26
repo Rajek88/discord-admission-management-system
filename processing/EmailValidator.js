@@ -61,11 +61,15 @@ const isUserExists = async (emailId) => {
     // console.log("each clan : ", eachClanJson);
     // get all the users from every clan
     for (let user of eachClanJson) {
-      console.log(`each email in ${clanName} : `, user.Email + " & " + emailId);
-
       if (user.Email == emailId) {
+        console.log(
+          `each email in ${clanName} : `,
+          user.Email + " & " + emailId
+        );
+
         isMail = clanName;
         console.log("matched ", isMail);
+        break;
       }
     }
   }
