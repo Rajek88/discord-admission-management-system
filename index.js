@@ -13,6 +13,15 @@ let clanNum1;
 let lastMailAuthor;
 const validateEmail = require("./processing/EmailValidator");
 
+// user Info
+let userData = {
+  name: "",
+  userID: "",
+  emailID: "",
+  joinedAt: "",
+  userClan: "",
+};
+
 // 1 = in normal DM, 2 = in Verfication DM
 let isInDM = 1;
 
@@ -23,6 +32,7 @@ const client = new Client({
     Intents.FLAGS.GUILDS,
     Intents.FLAGS.GUILD_MESSAGES,
     Intents.FLAGS.DIRECT_MESSAGES,
+    Intents.FLAGS.GUILD_MEMBERS,
   ],
 });
 
@@ -33,6 +43,18 @@ client.once("ready", () => {
   console.log("Bot Online..");
 });
 
+// setup on when user joins clan
+client.on("guildMemberAdd", (member) => {
+  userData.name = member.displayName;
+  userData.userID = member.user.id;
+  userData.joinedAt = member.joinedAt;
+  client.channels.cache.get("914046516581253132").send(
+    `${member.displayName} just appeared ! \n
+    User ID : ${member.user.id} \n
+    Joined at : ${member.joinedAt} \n
+    `
+  );
+});
 // setup on message create
 client.on("messageCreate", (message) => {
   // if the author of message is bot then it may get into loop, so handle it
@@ -47,6 +69,15 @@ client.on("messageCreate", (message) => {
     DMHandlerForEmailVerification(message, clanNum1).then((status) => {
       // Added edge case to prevent multiple emails to get verified at same command
       if (status == "verified") {
+        userData.userClan = clanNum1;
+        userData.emailID = message.content;
+        client.channels.cache.get("914046516581253132").send(
+          `${message.author} just appeared ! \n
+          User Email : ${message.content} \n
+          User ID : ${message.author.id} \n
+          Clan : ${userData.userClan}
+          `
+        );
         clanNum1 = undefined;
         if (validateEmail(message.content)) {
           lastMailAuthor = message.author.discriminator;
@@ -74,7 +105,10 @@ client.on("messageCreate", (message) => {
 
     if (cmd === "join" && clan == "clan") {
       // message.reply("Ok wait");
-      if (message.author.discriminator === lastMailAuthor) {
+      if (
+        message.author.discriminator === lastMailAuthor ||
+        message.author.id === userData.userID
+      ) {
         // to prevent user from executing Join clan cmd agin and again
         message.reply(`You are already admitted to a clan ${clanNum}`);
         return;
