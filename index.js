@@ -110,7 +110,7 @@ client.on("messageCreate", (message) => {
         message.author.id === userData.userID
       ) {
         // to prevent user from executing Join clan cmd agin and again
-        message.reply(`You are already admitted to a clan ${clanNum}`);
+        message.reply(`You are already admitted to a clan`);
         return;
       }
       JoinClan(message, clanNum);
