@@ -9,6 +9,15 @@ const DMHandlerForEmailVerification = async (message, clanNum) => {
   if (message.author.bot) {
     return;
   }
+
+  // if clan is not defined
+  if (typeof clanNum == "undefined") {
+    message.channel.send(
+      "Coudn't process your emaill ID as clan is unndefined, Kindly run ' !join-clan-XX ' command to start admission process.."
+    );
+    return;
+  }
+
   console.log("message received DM : ", message.content);
   console.log("message channel is DM ? : ", message.channel.type);
   // initialize gauth
@@ -33,6 +42,9 @@ const DMHandlerForEmailVerification = async (message, clanNum) => {
       // **************************************************************************************************** Append the data here now ***********************************
       message.channel.send("Verified Successfully !");
 
+      let date = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
+      // console.log(date.toLocaleString("en-IN"));
+      // let currentDateTime = date.toLocaleDateString("en-IN");
       let values = [
         [
           message.content,
@@ -40,7 +52,8 @@ const DMHandlerForEmailVerification = async (message, clanNum) => {
           message.author.id,
           `!join-clan-${clanNum}`,
           message.channelId,
-          message.createdTimestamp,
+          // message.createdTimestamp.toLocaleString("en-US"),
+          date,
         ],
         // Additional rows ...
       ];
