@@ -10,7 +10,8 @@ const { Client, Intents } = require("discord.js");
 const DMHandlerForEmailVerification = require("./DM");
 const JoinClan = require("./processing/JoinClan");
 let clanNum1;
-// const validateEmail = require("./processing/EmailValidator");
+let lastMailAuthor;
+const validateEmail = require("./processing/EmailValidator");
 
 // 1 = in normal DM, 2 = in Verfication DM
 let isInDM = 1;
@@ -47,6 +48,9 @@ client.on("messageCreate", (message) => {
       // Added edge case to prevent multiple emails to get verified at same command
       if (status == "verified") {
         clanNum1 = undefined;
+        if (validateEmail(message.content)) {
+          lastMailAuthor = message.author.discriminator;
+        }
       }
     });
     // console.log("Is verified in INDEX : ", isVerified);
@@ -70,6 +74,11 @@ client.on("messageCreate", (message) => {
 
     if (cmd === "join" && clan == "clan") {
       // message.reply("Ok wait");
+      if (message.author.discriminator === lastMailAuthor) {
+        // to prevent user from executing Join clan cmd agin and again
+        message.reply(`You are already admitted to a clan ${clanNum}`);
+        return;
+      }
       JoinClan(message, clanNum);
     } else {
       message.reply("Thats an invalid command, recheck it !");
