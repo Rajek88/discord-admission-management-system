@@ -43,7 +43,7 @@ someone@example.com
 
 ## Process
 
-Once you enter your email, It will tell you if your email is already exists in some clan's database or not, If not it will add your details to the clan's database
+Once you enter your email, It will tell you if your email is already exists in some clan's database or not, If not it will add your details to the clan's database.
 
 ## Contributing
 
