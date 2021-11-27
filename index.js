@@ -44,6 +44,7 @@ client.on("messageCreate", (message) => {
 
   if (message.channel.type === "DM" && !message.content.startsWith(PREFIX)) {
     DMHandlerForEmailVerification(message, clanNum1).then((status) => {
+      // Added edge case to prevent multiple emails to get verified at same command
       if (status == "verified") {
         clanNum1 = undefined;
       }
