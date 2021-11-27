@@ -43,7 +43,12 @@ client.on("messageCreate", (message) => {
   console.log("msg : ", message);
 
   if (message.channel.type === "DM" && !message.content.startsWith(PREFIX)) {
-    DMHandlerForEmailVerification(message, clanNum1);
+    DMHandlerForEmailVerification(message, clanNum1).then((status) => {
+      if (status == "verified") {
+        clanNum1 = undefined;
+      }
+    });
+    // console.log("Is verified in INDEX : ", isVerified);
     return;
   }
   if (message.content.startsWith(PREFIX) && message.channel.type !== "DM") {
