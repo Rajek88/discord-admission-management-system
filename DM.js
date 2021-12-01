@@ -40,7 +40,9 @@ const DMHandlerForEmailVerification = async (message, clanNum) => {
       message.channel.send(`User is already admitted to ${isEmailExists}`);
     } else {
       // **************************************************************************************************** Append the data here now ***********************************
-      message.channel.send("Verified Successfully !");
+      message.channel.send(
+        `Verified Successfully ! Welcome to Clan-${clanNum} !`
+      );
 
       let date = new Date().toISOString().replace(/T/, " ").replace(/\..+/, "");
       // console.log(date.toLocaleString("en-IN"));
@@ -145,7 +147,7 @@ const DMHandlerForEmailVerification = async (message, clanNum) => {
   //   }
 
   let filter = (m) => m.author.id === message.author.id;
-  message.author
+  message.channel
     .send(`Hey ${message.author}, Enter your email to verify`)
     .then(() => {
       message.channel

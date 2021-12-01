@@ -105,6 +105,8 @@ client.on("messageCreate", (message) => {
 
     if (cmd === "join" && clan == "clan") {
       // message.reply("Ok wait");
+
+      // I can also use discriminator for searching,
       if (
         message.author.discriminator === lastMailAuthor ||
         message.author.id === userData.userID
